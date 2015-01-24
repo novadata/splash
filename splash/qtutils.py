@@ -134,6 +134,13 @@ def get_qt_app():
     return _qtapp
 
 
+def process_pending_events():
+    """Process pending Qt events and deliver pending signals."""
+    log.msg("Processing pending events: starting...")
+    get_qt_app().processEvents()
+    log.msg("Processing pending events: completed.")
+
+
 def qurl2ascii(url):
     """ Convert QUrl to ASCII text suitable for logging """
     url = unicode(url.toString()).encode('unicode-escape').decode('ascii')

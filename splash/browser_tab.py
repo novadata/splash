@@ -147,6 +147,15 @@ class BrowserTab(QObject):
         Set viewport size.
         If size is "full" viewport size is detected automatically.
         If can also be "<width>x<height>".
+
+        .. note::
+
+           Re-layout of dynamically sized HTML elements, update of JS dimension
+           variables and invocation of ``window.resize`` event handler will not
+           happen immediately, because they're tied to a signal and signal
+           delivery is asynchronous.  Use `qtutils.process_pending_events` to
+           force it and see the results without delay.
+
         """
         if size == 'full':
             size = self.web_page.mainFrame().contentsSize()
