@@ -22,7 +22,7 @@ from splash.lua import (
 from splash.har.qt import reply2har
 from splash.render_options import BadOption
 from splash.utils import truncated, BinaryCapsule
-from splash.qtutils import REQUEST_ERRORS_SHORT
+from splash.qtutils import REQUEST_ERRORS_SHORT, process_pending_events
 
 
 class ScriptError(BadOption):
@@ -456,10 +456,13 @@ class Splash(object):
     @command()
     def set_viewport_size(self, width, height):
         self.tab.set_viewport('%dx%d' % (width, height))
+        process_pending_events()
 
     @command(multiple_return_values=True)
     def set_viewport_full(self):
-        return list(self.tab.set_viewport('full'))
+        size = self.tab.set_viewport('full')
+        process_pending_events()
+        return list(size)
 
     @command()
     def set_images_enabled(self, enabled):
