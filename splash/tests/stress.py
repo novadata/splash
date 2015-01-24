@@ -157,19 +157,19 @@ def benchmark_png(url, viewport='full', wait=0.5,
                   width=None, height=None, nrepeats=3, timeout=60.):
     f = """
 function main(splash)
-    resp, err = splash:go(splash.args.url)
+    local resp, err = splash:go(splash.args.url)
     assert(resp, err)
     assert(splash:wait(tonumber(splash.args.wait)))
     assert(splash:set_viewport(splash.args.viewport))
 
-    susage = splash:get_perf_stats()
+    local susage = splash:get_perf_stats()
     local nrepeats = tonumber(splash.args.nrepeats)
     for i = 1, nrepeats do
-        png, err = splash:png{width=splash.args.width,
-                              height=splash.args.height}
+        local png, err = splash:png{width=splash.args.width,
+                                    height=splash.args.height}
         assert(png, err)
     end
-    eusage = splash:get_perf_stats()
+    local eusage = splash:get_perf_stats()
     return {
         wallclock_secs=(eusage.walltime - susage.walltime) / nrepeats,
         maxrss=eusage.maxrss,
