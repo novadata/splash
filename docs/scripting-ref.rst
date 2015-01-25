@@ -603,18 +603,31 @@ Return a `width x height` screenshot of a current page in PNG format.
 
 **Returns:** PNG screenshot data.
 
-TODO: document what default values mean
+*width* and *height* arguments set the size of the resulting image, not the
+size of an area screenshot is taken of (aka the viewport).  To set the viewport
+size use :ref:`splash-set-viewport-size`, :ref:`splash-set-viewport-full` or
+*render_all* argument (see below).
 
-*width* and *height* arguments set a size of the resulting image,
-not a size of an area screenshot is taken of. For example, if the viewport
-is 1024px wide then ``splash:png{width=100}`` will return a screenshot
-of the whole viewport, but an image will be downscaled to 100px width.
+Changing *width* adjusts the height to maintain viewport ratio, so given a
+1000x500 px viewport, ``splash:png{width=100}`` will produce an 100x50 px
+image.
 
-To set the viewport size use :ref:`splash-set-viewport-size`,
-:ref:`splash-set-viewport-full` or *render_all* argument.  ``render_all=true``
-is similar to running ``splash:set_viewport_full()``, just before the rendering
-and restoring the viewport size afterwards, except that it doesn't notify the
-page of the temporary resize and thus avoids a relayout.
+Changing *height* does **not** change the width of the image and can be seen as
+a way to trim the viewport.  Given the same 1000x500 viewport from above,
+``splash:png{height=100}`` will create an image of 1000x100 size.  If specified
+*height* is greater than the height of the viewport, the image will contain an
+empty (transparent) rectangle at the bottom.
+
+``render_all=true`` is similar to running ``splash:set_viewport_full()``, just
+before the rendering and restoring the viewport size afterwards, except that it
+doesn't notify the page of the temporary resize and thus avoids a relayout.
+
+The operations regulated by function parameters are performed in the following
+order:
+
+* resize viewport to include the whole webpage
+* adjust width maintaining viewport ratio
+* adjust height
 
 If the result of ``splash:png()`` is returned directly as a result of
 "main" function, the screenshot is returned as binary data:
