@@ -611,9 +611,10 @@ is 1024px wide then ``splash:png{width=100}`` will return a screenshot
 of the whole viewport, but an image will be downscaled to 100px width.
 
 To set the viewport size use :ref:`splash-set-viewport-size`,
-:ref:`splash-set-viewport-full` or *render_all* argument.  *render_all=true* is
-equivalent to running ``splash:set_viewport_full()`` just before the rendering
-and restoring the viewport size afterwards.
+:ref:`splash-set-viewport-full` or *render_all* argument.  ``render_all=true``
+is similar to running ``splash:set_viewport_full()``, just before the rendering
+and restoring the viewport size afterwards, except that it doesn't notify the
+page of the temporary resize and thus avoids a relayout.
 
 If the result of ``splash:png()`` is returned directly as a result of
 "main" function, the screenshot is returned as binary data:
@@ -977,10 +978,7 @@ Example:
 .. note::
 
    This will affect ``window.innerWidth`` and ``window.innerHeight`` JS
-   variables and invoke ``window.onresize`` event callback.  However this will
-   only happen during the next asynchronous operation and :ref:`splash-png` is
-   notably synchronous, so if you have resized a page and want it to react
-   accordingly before taking the screenshot, use :ref:`splash-wait`.
+   variables and may invoke ``window.onresize`` event callback.
 
 .. _splash-set-viewport-full:
 
